@@ -1,0 +1,23 @@
+{
+  "name": "painer.de",
+  "version": "0.1.0",
+  "description": "painer.de web site",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/spainer/painer.de.git"
+  },
+  "author": "Sven Painer",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/spainer/painer.de/issues"
+  },
+  "homepage": "https://github.com/spainer/painer.de#readme",
+  "devDependencies": {
+    "gulp": "^3.9.0",
+    "gulp-concat": "^2.6.0",
+    "gulp-less": "^3.0.3",
+    "gulp-minify-css": "^1.2.1",
+    "gulp-rename": "^1.2.2",
+    "gulp-uglify": "^1.4.1"
+  }
+}
