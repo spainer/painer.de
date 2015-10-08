@@ -13,6 +13,7 @@
   },
   "homepage": "https://github.com/spainer/painer.de#readme",
   "devDependencies": {
+    "browser-sync": "^2.9.10",
     "gulp": "^3.9.0",
     "gulp-concat": "^2.6.0",
     "gulp-minify-css": "^1.2.1",

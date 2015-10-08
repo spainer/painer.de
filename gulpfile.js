@@ -5,10 +5,11 @@ var concat = require('gulp-concat');
 var uglify = require('gulp-uglify');
 var rename = require('gulp-rename');
 var spawn = require('child_process').spawn;
+var browserSync = require('browser-sync').create();
 
 // define inputs
 var input = {
-  pages: ['**/*.+(html|md|markdown|xml|yml)', '!_site/*'],
+  pages: ['**/*.+(html|md|markdown|xml|yml|scss)', '!_site/*'],
   scripts: ['assets/scripts/jQuery/*.js', 'assets/scripts/bootstrap/js/*.js']
 };
 
@@ -23,8 +24,12 @@ gulp.task('default', ['development']);
 
 // development task
 gulp.task('development', ['jekyll', 'scripts', 'serve'], function() {
-  gulp.watch(input.pages, ['jekyll']);
-  gulp.watch(input.scripts, ['scripts']);
+  // reload browser as the files have been changed recently
+  browserSync.reload();
+
+  // and watch files for changes
+  gulp.watch(input.pages, ['jekyll-reload']);
+  gulp.watch(input.scripts, ['scripts-reload']);
 });
 
 // start jekyll to rebuild web site
@@ -38,6 +43,11 @@ gulp.task('jekyll', function(gulpCallBack) {
   });
 });
 
+// task to recreate site and reload browser on changes
+gulp.task('jekyll-reload', ['jekyll'], function() {
+  browserSync.reload();
+});
+
 // Combine JS script files
 gulp.task('scripts', function() {
   return gulp.src(input.scripts)
@@ -46,13 +56,16 @@ gulp.task('scripts', function() {
     .pipe(gulp.dest(output.assetsFolder));
 });
 
-// serve jekyll web site
-gulp.task('serve', ['jekyll', 'scripts'], function(gulpCallBack) {
-  // start jekyll server
-  var jekyll = spawn('jekyll', ['serve', '--detach', '--skip-initial-build'], {stdio: 'inherit'});
+// task to recreate scripts and reload browser on changes
+gulp.task('scripts-reload', ['scripts'], function() {
+  browserSync.reload();
+});
 
-  // and wait for task to be finished
-  jekyll.on('exit', function(code) {
-    gulpCallBack(code === 0 ? null : 'ERROR: Jekyll process exited with code: ' + code);
+// task to serve site to browsers
+gulp.task('serve', function() {
+  browserSync.init({
+    server: {
+      baseDir: "_site/"
+    }
   });
 });
