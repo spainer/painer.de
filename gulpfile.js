@@ -1,9 +1,12 @@
 // load modules
 var gulp = require('gulp');
+var uncss = require('gulp-uncss');
 var minifyCSS = require('gulp-minify-css');
 var concat = require('gulp-concat');
 var uglify = require('gulp-uglify');
 var rename = require('gulp-rename');
+var htmlmin = require('gulp-htmlmin');
+var gzip = require('gulp-gzip');
 var spawn = require('child_process').spawn;
 var browserSync = require('browser-sync').create();
 
@@ -16,7 +19,8 @@ var input = {
 // define outputs
 var output = {
   assetsFolder: '_site/assets',
-  scripts: 'scripts.js'
+  scripts: 'scripts.js',
+  styles: 'style.css'
 };
 
 // default task (start development task)
@@ -52,13 +56,46 @@ gulp.task('jekyll-reload', ['jekyll'], function() {
 gulp.task('scripts', function() {
   return gulp.src(input.scripts)
     .pipe(concat(output.scripts))
-    .pipe(uglify())
     .pipe(gulp.dest(output.assetsFolder));
 });
 
 // task to recreate scripts and reload browser on changes
 gulp.task('scripts-reload', ['scripts'], function() {
   browserSync.reload();
+});
+
+// release task
+gulp.task('release', ['html-release', 'styles-release', 'scripts-release']);
+
+// task to optimize scripts for release
+gulp.task('scripts-release', ['jekyll', 'scripts'], function() {
+  return gulp.src(output.assetsFolder + '/' + output.scripts)
+    .pipe(uglify({preserveComments: 'license'}))
+    .pipe(gulp.dest(output.assetsFolder))
+    .pipe(gzip())
+    .pipe(gulp.dest(output.assetsFolder));
+});
+
+// task to optimize styles
+gulp.task('styles-release', ['jekyll', 'html-release'], function() {
+  return gulp.src(output.assetsFolder + '/' + output.styles)
+    //.pipe(uncss({
+    //  html: '_site/**/*.html'
+    //}))
+    .pipe(minifyCSS())
+    .pipe(gulp.dest(output.assetsFolder))
+    .pipe(gzip())
+    .pipe(gulp.dest(output.assetsFolder));
+});
+
+// task to optimize HTML
+gulp.task('html-release', ['jekyll'], function() {
+  return gulp.src('_site/**/*.html')
+    .pipe(htmlmin({
+      removeComments: true,
+      collapseWhitespace: true
+    }))
+    .pipe(gulp.dest('_site'));
 });
 
 // task to serve site to browsers
