@@ -79,9 +79,9 @@ gulp.task('scripts-release', ['jekyll', 'scripts'], function() {
 // task to optimize styles
 gulp.task('styles-release', ['jekyll', 'html-release'], function() {
   return gulp.src(output.assetsFolder + '/' + output.styles)
-    //.pipe(uncss({
-    //  html: '_site/**/*.html'
-    //}))
+    .pipe(uncss({
+      html: ['_site/**/*.html']
+    }))
     .pipe(minifyCSS())
     .pipe(gulp.dest(output.assetsFolder))
     .pipe(gzip())
