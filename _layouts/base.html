@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="{{page.lang}}">
+<head>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% if page.title %} {{page.title}} - {% endif %}{{site.title}}</title>
+  <link href="{{site.baseurl}}/assets/style.css" rel="stylesheet" type="text/css">
+</head>
+<body>
+  <div class="container" id="content">
+    {% include navigation.html %}
+
+    <div class="row">
+      {{content}}
+    </div>
+
+    <div class="row">
+      {% include footer.html %}
+    </div>
+  </div>
+
+  <script src="{{site.baseurl}}/assets/scripts.js"></script>
+</body>
+</html>

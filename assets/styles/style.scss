@@ -9,11 +9,11 @@ body {
 }
 
 #content {
-	width: 1000px;
 	background-color: #fff;
 	color: #000;
 
 	@media (min-width: 1000px) {
+		width: 1000px;
 		background-image: url('/assets/images/Hamburg.jpg');
 		background-repeat: no-repeat;
 		padding-top: 180px;
@@ -27,4 +27,8 @@ body {
 footer {
 	border-top: 1px solid #ddd;
 	padding: 4px 0;
+}
+
+ul.nav div.btn-group {
+    margin-right: 15px;
 }

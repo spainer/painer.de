@@ -1,0 +1,29 @@
+de:
+  - name: Heim
+    id: index
+  - name: Heim 2
+    id: index
+  - name: Untermenü
+    sub:
+      - name: Unterpunkt 1
+        id: index
+      - type: separator
+      - name: Überschrift
+        type: headline
+      - name: Unterpunkt 2
+        id: index
+
+en:
+  - name: Home
+    id: index
+  - name: Home 2
+    id: index
+  - name: Submenu
+    sub:
+      - name: Subpoint 1
+        id: index
+      - type: separator
+      - name: Headline
+        type: headline
+      - name: Subpoint 2
+        id: index

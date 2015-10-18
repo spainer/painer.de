@@ -1,0 +1,50 @@
+<nav class="navbar navbar-default navbar-static-top row" role="navigation">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="{{site.baseurl}}/{{page.lang}}/">{{site.title}}</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        {% for navi in site.data.nav[page.lang] %}
+          {% if navi.sub %}
+            <li class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">{{navi.name}}<span class="caret"></span></a>
+              <ul class="dropdown-menu" role="menu">
+                {% for child in navi.sub %}
+                  {% if child.type == "separator" %}
+                    <li class="divider"></li>
+                  {% elsif child.type == "headline" %}
+                    <li class="dropdown-header">{{child.name}}</li>
+                  {% else %}
+                    {% assign p=site.pages | where:"id",child.id | where:"lang",page.lang %}
+                    <li><a href="{{site.baseurl}}{{p[0].url}}">{{child.name}}</a></li>
+                  {% endif %}
+                {% endfor %}
+              </ul>
+            </li>
+          {% else %}
+            {% assign p=site.pages | where:"id",navi.id | where:"lang",page.lang %}
+            <li><a href="{{site.baseurl}}{{p[0].url}}">{{navi.name}}</a></li>
+          {% endif %}
+        {% endfor %}
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li><a href="#">{{site.data.trans[page.lang].imprint}}</a></li>
+        <li>
+          <div class="btn-group">
+            {% assign ps=site.pages | where:"id",page.id | sort:'path' %}
+            {% for p in ps %}
+              <a href="{{p.url}}" class="btn navbar-btn {% if p.lang == page.lang %}btn-primary disabled{% else %}btn-default{% endif %}">{{p.lang}}</a>
+            {% endfor %}
+          </div>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
