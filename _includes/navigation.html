@@ -47,10 +47,6 @@
         {% endfor %}
       </ul>
       <ul class="nav navbar-nav navbar-right">
-        {% assign imprint=site.pages | where:"id","imprint" | where:"lang",page.lang | first %}
-        {% if imprint %}
-          <li><a href="{{site.baseurl}}{{imprint.url}}">{{imprint.title}}</a></li>
-        {% endif %}
         {% if page.id %}
           <li>
             <div class="btn-group">

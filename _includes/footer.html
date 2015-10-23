@@ -1,6 +1,13 @@
 <footer class="col-xs-12">
 	<div class="row">
-		<div class="col-xs-6"><a href="#">{{site.data.trans[page.lang].backtop]}}</a></div>
-		<div class="col-xs-6 text-right">&copy; {{ 'now' | date: "%Y" }} Sven Painer</div>
+		<div class="col-xs-6">
+			{% assign imprint=site.pages | where:"id","imprint" | where:"lang",page.lang | first %}
+			{% if imprint %}
+				<a href="{{site.baseurl}}{{imprint.url}}">{{imprint.title}}</a>
+			{% endif %}
+		</div>
+		<div class="col-xs-6 text-right">
+			&copy; {{ 'now' | date: "%Y" }} Sven Painer
+		</div>
 	</div>
 </footer>
