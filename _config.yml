@@ -23,6 +23,7 @@ defaults:
       path: ""
     values:
       layout: default
+      lang: en
   -
     scope:
       path: de
