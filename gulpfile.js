@@ -13,16 +13,14 @@ var browserSync = require('browser-sync').create();
 // define inputs
 var input = {
   pages: ['**/*.+(html|md|markdown|xml|yml|scss)', '!_site/*'],
-  scripts_head: ['assets/scripts/vendor/modernizr.js'],
-  scripts_main: ['assets/scripts/vendor/jquery.js', 'assets/scripts/vendor/fastclick.js', 'assets/scripts/foundation.min.js']
+  scripts: ['assets/scripts/jQuery/*.js', 'assets/scripts/bootstrap/js/*.js']
 };
 
 // define outputs
 var output = {
   assetsFolder: '_site/assets',
-  scripts_head: 'scripts_head.js',
-  scripts_main: 'scripts_main.js',
-  styles: 'styles.css'
+  scripts: 'scripts.js',
+  styles: 'style.css'
 };
 
 // default task (start development task)
@@ -55,17 +53,9 @@ gulp.task('jekyll-reload', ['jekyll'], function() {
 });
 
 // Combine JS script files
-gulp.task('scripts', ['scripts-head', 'scripts-main']);
-
-gulp.task('scripts-head', function() {
-  return gulp.src(input.scripts_head)
-    .pipe(concat(output.scripts_head))
-    .pipe(gulp.dest(output.assetsFolder));
-});
-
-gulp.task('scripts-main', function() {
-  return gulp.src(input.scripts_main)
-    .pipe(concat(output.scripts_main))
+gulp.task('scripts', function() {
+  return gulp.src(input.scripts)
+    .pipe(concat(output.scripts))
     .pipe(gulp.dest(output.assetsFolder));
 });
 
@@ -78,18 +68,8 @@ gulp.task('scripts-reload', ['scripts'], function() {
 gulp.task('release', ['html-release', 'styles-release', 'scripts-release']);
 
 // task to optimize scripts for release
-gulp.task('scripts-release', ['scripts-release-head', 'scripts-release-main']);
-
-gulp.task('scripts-release-head', ['jekyll', 'scripts-head'], function() {
-  return gulp.src(output.assetsFolder + '/' + output.scripts_head)
-    .pipe(uglify({preserveComments: 'license'}))
-    .pipe(gulp.dest(output.assetsFolder))
-    .pipe(gzip())
-    .pipe(gulp.dest(output.assetsFolder));
-});
-
-gulp.task('scripts-release-main', ['jekyll', 'scripts-main'], function() {
-  return gulp.src(output.assetsFolder + '/' + output.scripts_main)
+gulp.task('scripts-release', ['jekyll', 'scripts'], function() {
+  return gulp.src(output.assetsFolder + '/' + output.scripts)
     .pipe(uglify({preserveComments: 'license'}))
     .pipe(gulp.dest(output.assetsFolder))
     .pipe(gzip())
