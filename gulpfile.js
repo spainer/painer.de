@@ -1,7 +1,7 @@
 // load modules
 var gulp = require('gulp');
 var uncss = require('gulp-uncss');
-var minifyCSS = require('gulp-minify-css');
+var cssNano = require('gulp-cssnano');
 var concat = require('gulp-concat');
 var uglify = require('gulp-uglify');
 var rename = require('gulp-rename');
@@ -82,7 +82,7 @@ gulp.task('styles-release', ['jekyll', 'html-release'], function() {
     .pipe(uncss({
       html: ['_site/**/*.html']
     }))
-    .pipe(minifyCSS())
+    .pipe(cssNano())
     .pipe(gulp.dest(output.assetsFolder))
     .pipe(gzip())
     .pipe(gulp.dest(output.assetsFolder));
