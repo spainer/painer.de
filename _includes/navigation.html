@@ -1,13 +1,16 @@
-<div class="sticky">
-  <nav class="top-bar" data-topbar role="navigation">
-    <ul class="title-area">
-      <li class="name">
-        <h1><a href="{{site.baseurl}}/{{page.lang}}/">{{site.title}}</a></h1>
-      </li>
-      <li class="toggle-topbar menu-icon"><a href="#"><span></span></a></li>
-    </ul>
-    <section class="top-bar-section">
-      <ul class="left">
+<nav class="navbar navbar-default navbar-static-top row" role="navigation">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="{{site.baseurl}}/{{page.lang}}/">{{site.title}}</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
         {% for navi in site.data.nav %}
           {% if navi.type == "entry" %}
             {% assign p=site.pages | where:"id",navi.id | where:"lang",page.lang | first %}
@@ -18,14 +21,14 @@
             {% endif %}
             <a href="{{site.baseurl}}{{p.url}}">{{p.title}}</a></li>
           {% elsif navi.type == "menu" %}
-            <li class="has-dropdown">
-              <a href="#">{{navi.name[page.lang]}}</a>
-              <ul class="dropdown">
+            <li class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">{{navi.name[page.lang]}}<span class="caret"></span></a>
+              <ul class="dropdown-menu" role="menu">
                 {% for child in navi.entries %}
                   {% if child.type == "separator" %}
                     <li class="divider"></li>
                   {% elsif child.type == "headline" %}
-                    <li><label>{{child.name[page.lang]}}</label></li>
+                    <li class="dropdown-header">{{child.name[page.lang]}}</li>
                   {% else %}
                     {% assign p=site.pages | where:"id",child.id | where:"lang",page.lang | first %}
                     {% if child.id == page.id %}
@@ -43,18 +46,18 @@
           {% endif %}
         {% endfor %}
       </ul>
-      {% if page.id %}
-      <ul class="right">
-        <li class="has-form">
-          <ul class="button-group radius">
-            {% assign ps=site.pages | where:"id",page.id | sort:'path' %}
-            {% for p in ps %}
-              <li><a href="{{site.baseurl}}{{p.url}}" class="button {% if p.lang == page.lang %}disabled{% else %}secondary{% endif %}">{{p.lang}}</a></li>
-            {% endfor %}
-          </ul>
-        </li>
+      <ul class="nav navbar-nav navbar-right">
+        {% if page.id %}
+          <li>
+            <div class="btn-group">
+              {% assign ps=site.pages | where:"id",page.id | sort:'path' %}
+              {% for p in ps %}
+                <a href="{{p.url}}" class="btn navbar-btn {% if p.lang == page.lang %}btn-primary disabled{% else %}btn-default{% endif %}">{{p.lang}}</a>
+              {% endfor %}
+            </div>
+          </li>
+        {% endif %}
       </ul>
-      {% endif %}
-    </section>
-  </nav>
-</div>
+    </div>
+  </div>
+</nav>

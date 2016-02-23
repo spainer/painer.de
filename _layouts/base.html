@@ -1,31 +1,25 @@
 <!DOCTYPE html>
-<!--[if IE 9]><html class="lt-ie10" lang="en" > <![endif]-->
-<html class="no-js" lang="{{page.lang}}" >
-
+<html lang="{{page.lang}}">
 <head>
-  <meta charset="utf-8">
-  <!-- If you delete this meta tag World War Z will become a reality -->
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>{% if page.title %} {{page.title}} - {% endif %}{{site.title}}</title>
-  <link href="{{site.baseurl}}/assets/styles.css" rel="stylesheet" type="text/css">
-  <script src="{{site.baseurl}}/assets/scripts_head.js"></script>
+  <link href="{{site.baseurl}}/assets/style.css" rel="stylesheet" type="text/css">
 </head>
 <body>
-  <div class="row" id="content">
+  <div class="container" id="content">
     {% include navigation.html %}
 
-    <div class="small-12 columns">
-      <div class="row">
-        {{content}}
-      </div>
-      <div class="row">
-        {% include footer.html %}
-      </div>
+    <div class="row">
+      {{content}}
+    </div>
+
+    <div class="row">
+      {% include footer.html %}
     </div>
   </div>
-  <script src="{{site.baseurl}}/assets/scripts_main.js"></script>
-  <script>
-    $(document).foundation();
-  </script>
+
+  <script src="{{site.baseurl}}/assets/scripts.js"></script>
 </body>
 </html>
