@@ -9,7 +9,6 @@ var htmlmin = require('gulp-htmlmin');
 var gzip = require('gulp-gzip');
 var spawn = require('child_process').spawn;
 var browserSync = require('browser-sync').create();
-var merge = require('merge-stream');
 
 // paths to be used in the project
 var paths = {
@@ -27,8 +26,12 @@ var paths = {
       out: 'fonts'
     }
   },
+  jquery: {
+    in: 'node_modules/jquery/dist/jquery.js',
+    out: 'assets/scripts'
+  },
   scripts: {
-    in: ['assets/scripts/jQuery/*.js', 'assets/scripts/bootstrap.js'],
+    in: ['assets/scripts/jquery.js', 'assets/scripts/bootstrap.js'],
     out: 'scripts.js'
   },
   styles: {
@@ -40,8 +43,9 @@ var paths = {
   site: {
     out: '_site'
   },
-  pages: {
-    in: ['**/*.+(html|md|markdown|xml|yml|scss)', '!_site/*']
+  watch: {
+    pages: ['**/*.+(html|md|markdown|xml|yml|scss)', '!_site/**/*', '!_sass/bootstrap/**/*'],
+    scripts: ['assets/scripts/**/*.js', '!_assets/scripts/jquery.js', '!_assets/scripts/bootstrap.js']
   }
 };
 
@@ -54,21 +58,29 @@ gulp.task('development', ['jekyll', 'scripts', 'serve'], function() {
   browserSync.reload();
 
   // and watch files for changes
-  gulp.watch(paths.pages.in, ['jekyll-reload']);
-  gulp.watch(paths.scripts.in, ['scripts-reload']);
+  gulp.watch(paths.watch.pages, ['jekyll-reload']);
+  gulp.watch(paths.watch.scripts, ['scripts-reload']);
 });
 
 // copy bootstrap to project
-gulp.task('bootstrap', function() {
-  return merge(
-    gulp.src(paths.bootstrap.sass.in).pipe(gulp.dest(paths.bootstrap.sass.out)),
-    gulp.src(paths.bootstrap.scripts.in).pipe(gulp.dest(paths.bootstrap.scripts.out)),
-    gulp.src(paths.bootstrap.fonts.in).pipe(gulp.dest(paths.bootstrap.fonts.out))
-  );
+gulp.task('bootstrap-styles', function() {
+  return gulp.src(paths.bootstrap.sass.in).pipe(gulp.dest(paths.bootstrap.sass.out));
+});
+gulp.task('bootstrap-scripts', function() {
+  return gulp.src(paths.bootstrap.scripts.in).pipe(gulp.dest(paths.bootstrap.scripts.out));
+});
+gulp.task('bootstrap-fonts', function() {
+  return gulp.src(paths.bootstrap.fonts.in).pipe(gulp.dest(paths.bootstrap.fonts.out));
+});
+
+// copy jQuery to project
+gulp.task('jquery', function() {
+  return gulp.src(paths.jquery.in).
+    pipe(gulp.dest(paths.jquery.out));
 });
 
 // start jekyll to rebuild web site
-gulp.task('jekyll', ['bootstrap'], function(gulpCallBack) {
+gulp.task('jekyll', ['bootstrap-styles', 'bootstrap-fonts'], function(gulpCallBack) {
   // start jekyll task
   var jekyll = spawn('jekyll', ['build'], {stdio: 'inherit'});
 
@@ -84,7 +96,7 @@ gulp.task('jekyll-reload', ['jekyll'], function() {
 });
 
 // Combine JS script files
-gulp.task('scripts', ['bootstrap'], function() {
+gulp.task('scripts', ['jquery', 'bootstrap-scripts'], function() {
   return gulp.src(paths.scripts.in)
     .pipe(concat(paths.scripts.out))
     .pipe(gulp.dest(paths.assets.out));

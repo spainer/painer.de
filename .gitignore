@@ -3,4 +3,5 @@ _sass/bootstrap/
 node_modules/
 .sass-cache/
 fonts/
+assets/scripts/jquery.js
 assets/scripts/bootstrap.js
