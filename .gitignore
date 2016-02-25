@@ -1,3 +1,6 @@
 _site/
+_sass/bootstrap/
 node_modules/
 .sass-cache/
+fonts/
+assets/scripts/bootstrap.js

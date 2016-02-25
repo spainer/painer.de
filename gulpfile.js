@@ -9,18 +9,40 @@ var htmlmin = require('gulp-htmlmin');
 var gzip = require('gulp-gzip');
 var spawn = require('child_process').spawn;
 var browserSync = require('browser-sync').create();
+var merge = require('merge-stream');
 
-// define inputs
-var input = {
-  pages: ['**/*.+(html|md|markdown|xml|yml|scss)', '!_site/*'],
-  scripts: ['assets/scripts/jQuery/*.js', 'assets/scripts/bootstrap/js/*.js']
-};
-
-// define outputs
-var output = {
-  assetsFolder: '_site/assets',
-  scripts: 'scripts.js',
-  styles: 'style.css'
+// paths to be used in the project
+var paths = {
+  bootstrap: {
+    sass: {
+      in: 'node_modules/bootstrap-sass/assets/stylesheets/**/*.scss',
+      out: '_sass/bootstrap'
+    },
+    scripts: {
+      in: 'node_modules/bootstrap-sass/assets/javascripts/bootstrap.js',
+      out: 'assets/scripts'
+    },
+    fonts: {
+      in: 'node_modules/bootstrap-sass/assets/fonts/bootstrap/*.*',
+      out: 'fonts'
+    }
+  },
+  scripts: {
+    in: ['assets/scripts/jQuery/*.js', 'assets/scripts/bootstrap.js'],
+    out: 'scripts.js'
+  },
+  styles: {
+    out: 'style.css'
+  },
+  assets: {
+    out: '_site/assets'
+  },
+  site: {
+    out: '_site'
+  },
+  pages: {
+    in: ['**/*.+(html|md|markdown|xml|yml|scss)', '!_site/*']
+  }
 };
 
 // default task (start development task)
@@ -32,12 +54,21 @@ gulp.task('development', ['jekyll', 'scripts', 'serve'], function() {
   browserSync.reload();
 
   // and watch files for changes
-  gulp.watch(input.pages, ['jekyll-reload']);
-  gulp.watch(input.scripts, ['scripts-reload']);
+  gulp.watch(paths.pages.in, ['jekyll-reload']);
+  gulp.watch(paths.scripts.in, ['scripts-reload']);
+});
+
+// copy bootstrap to project
+gulp.task('bootstrap', function() {
+  return merge(
+    gulp.src(paths.bootstrap.sass.in).pipe(gulp.dest(paths.bootstrap.sass.out)),
+    gulp.src(paths.bootstrap.scripts.in).pipe(gulp.dest(paths.bootstrap.scripts.out)),
+    gulp.src(paths.bootstrap.fonts.in).pipe(gulp.dest(paths.bootstrap.fonts.out))
+  );
 });
 
 // start jekyll to rebuild web site
-gulp.task('jekyll', function(gulpCallBack) {
+gulp.task('jekyll', ['bootstrap'], function(gulpCallBack) {
   // start jekyll task
   var jekyll = spawn('jekyll', ['build'], {stdio: 'inherit'});
 
@@ -53,10 +84,10 @@ gulp.task('jekyll-reload', ['jekyll'], function() {
 });
 
 // Combine JS script files
-gulp.task('scripts', function() {
-  return gulp.src(input.scripts)
-    .pipe(concat(output.scripts))
-    .pipe(gulp.dest(output.assetsFolder));
+gulp.task('scripts', ['bootstrap'], function() {
+  return gulp.src(paths.scripts.in)
+    .pipe(concat(paths.scripts.out))
+    .pipe(gulp.dest(paths.assets.out));
 });
 
 // task to recreate scripts and reload browser on changes
@@ -69,40 +100,40 @@ gulp.task('release', ['html-release', 'styles-release', 'scripts-release']);
 
 // task to optimize scripts for release
 gulp.task('scripts-release', ['jekyll', 'scripts'], function() {
-  return gulp.src(output.assetsFolder + '/' + output.scripts)
+  return gulp.src(paths.assets.out + '/' + paths.scripts.out)
     .pipe(uglify({preserveComments: 'license'}))
-    .pipe(gulp.dest(output.assetsFolder))
+    .pipe(gulp.dest(paths.assets.out))
     .pipe(gzip())
-    .pipe(gulp.dest(output.assetsFolder));
+    .pipe(gulp.dest(paths.assets.out));
 });
 
 // task to optimize styles
 gulp.task('styles-release', ['jekyll', 'html-release'], function() {
-  return gulp.src(output.assetsFolder + '/' + output.styles)
+  return gulp.src(paths.assets.out + '/' + paths.styles.out)
     .pipe(uncss({
-      html: ['_site/**/*.html']
+      html: [paths.site.out + '/**/*.html']
     }))
     .pipe(cssNano())
-    .pipe(gulp.dest(output.assetsFolder))
+    .pipe(gulp.dest(paths.assets.out))
     .pipe(gzip())
-    .pipe(gulp.dest(output.assetsFolder));
+    .pipe(gulp.dest(paths.assets.out));
 });
 
 // task to optimize HTML
 gulp.task('html-release', ['jekyll'], function() {
-  return gulp.src('_site/**/*.html')
+  return gulp.src(paths.site.out + '/**/*.html')
     .pipe(htmlmin({
       removeComments: true,
       collapseWhitespace: true
     }))
-    .pipe(gulp.dest('_site'));
+    .pipe(gulp.dest(paths.site.out));
 });
 
 // task to serve site to browsers
 gulp.task('serve', function() {
   browserSync.init({
     server: {
-      baseDir: "_site/"
+      baseDir: paths.site.out
     }
   });
 });
