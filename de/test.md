@@ -3,14 +3,16 @@ title: Testseite
 id: test
 ---
 
-# Titel geändert
+# Seitentitel
+
+Auf dieser Seite können einige Elemente getestet werden.
 
 {% include format.html align="center" transformation="uppercase" contextfg="danger" contextbg="danger" lead="false" %}
 Kleiner text geschrieben in Markdown, nicht HTML.
 
-# Zweite Hauptüberschrift
+# Test verschiedener Elemente
 
-Und ein zweiter Text
+Hier werden verschiedene Elemente getestet
 
 ## Quelltext
 
@@ -21,5 +23,14 @@ int main() {
   std::cout << "Hello World\n" << std::endl;
   return 0;
 }{% endhighlight %}
+
+## Zitat
+
+{% capture text %}
+Man sieht nur mit dem herzen gut,
+
+das Wesentliche ist für die Augen unsichtbar.
+{% endcapture %}
+{% include citation.html text=text author="A.S-E." source="Der kleine Prinz" %}
 
 *[HTML]: Hypertext Markup Language

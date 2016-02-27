@@ -1,0 +1,24 @@
+{% comment %}
+Display a citation.
+The text of the citation has to be given in the parameter text.
+Additionally, author and source can be given in the parameters with the same names.
+A source can only be given together with an author.
+The citation can be aligned on the right side with the parameter align set to right.
+{% endcomment %}
+
+{% if include.align == 'right' %}
+<blockquote class="blockquote-reverse">
+{% else %}
+<blockquote>
+{% endif %}
+<p class="blockquote-p">{{include.text | newline_to_br | replace_first:'<br />','' }}</p>
+{% if include.author %}
+  <footer>
+  {{include.author}}
+  {% if include.source %}
+    {{site.data.trans[page.lang].cite_in}}
+    <cite>{{include.source}}</cite>
+  {% endif %}
+  </footer>
+{% endif %}
+</blockquote>
