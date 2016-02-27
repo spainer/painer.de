@@ -9,6 +9,7 @@ var htmlmin = require('gulp-htmlmin');
 var gzip = require('gulp-gzip');
 var spawn = require('child_process').spawn;
 var browserSync = require('browser-sync').create();
+var autoprefixer = require('gulp-autoprefixer');
 
 // paths to be used in the project
 var paths = {
@@ -53,7 +54,7 @@ var paths = {
 gulp.task('default', ['development']);
 
 // development task
-gulp.task('development', ['jekyll', 'scripts', 'serve'], function() {
+gulp.task('development', ['jekyll', 'autoprefixer', 'scripts', 'serve'], function() {
   // reload browser as the files have been changed recently
   browserSync.reload();
 
@@ -90,8 +91,18 @@ gulp.task('jekyll', ['bootstrap-styles', 'bootstrap-fonts'], function(gulpCallBa
   });
 });
 
+// execute tasks depending on jekyll result
+gulp.task('autoprefixer', ['jekyll'], function() {
+  return gulp.src(paths.assets.out + '/' + paths.styles.out)
+    .pipe(autoprefixer({
+      browsers: ['> 5%'],
+      cascade: false
+    }))
+    .pipe(gulp.dest(paths.assets.out));
+});
+
 // task to recreate site and reload browser on changes
-gulp.task('jekyll-reload', ['jekyll'], function() {
+gulp.task('jekyll-reload', ['jekyll', 'autoprefixer'], function() {
   browserSync.reload();
 });
 
@@ -120,7 +131,7 @@ gulp.task('scripts-release', ['jekyll', 'scripts'], function() {
 });
 
 // task to optimize styles
-gulp.task('styles-release', ['jekyll', 'html-release'], function() {
+gulp.task('styles-release', ['jekyll', 'autoprefixer', 'html-release'], function() {
   return gulp.src(paths.assets.out + '/' + paths.styles.out)
     .pipe(uncss({
       html: [paths.site.out + '/**/*.html']
