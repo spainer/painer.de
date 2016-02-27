@@ -1,0 +1,4 @@
+{% assign content = {{content | replace_first:'<h1','<div class="page-header"><h1' | replace_first:'</h1>','</h1></div>'}} %}
+{% assign content = {{content | replace:'<p>','<p class="text-justify">'}} %}
+
+{{content}}

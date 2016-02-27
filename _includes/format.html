@@ -1,0 +1,24 @@
+{% comment %}
+Change format for a block.
+Alignment, transformation, foreground and background can be changed.
+Have a look at the bootstrap documentation for possible values.
+Additionaly, it is possible to stress a paragraph (with lead).
+{% endcomment %}
+
+{% if include.align %}
+{:.text-{{include.align}}}
+{% endif %}
+{% if include.transformation %}
+{:.text-{{include.transformation}}}
+{% endif %}
+{% if include.contextfg %}
+{:.text-{{include.contextfg}}}
+{% endif %}
+{% if include.contextbg %}
+{:.bg-{{include.contextbg}}}
+{% endif %}
+{% if include.lead %}
+{% if include.lead == 'true' %}
+{:.lead}
+{% endif %}
+{% endif %}
