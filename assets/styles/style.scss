@@ -1,6 +1,9 @@
 ---
 permalink: assets/style.css
 ---
+
+$icon-font-path: '{{site.baseurl}}/fonts/';
+
 @import 'bootstrap/bootstrap';
 @import 'syntax_highlighting';
 

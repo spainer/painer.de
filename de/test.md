@@ -33,4 +33,19 @@ das Wesentliche ist für die Augen unsichtbar.
 {% endcapture %}
 {% include citation.html text=text author="A.S-E." source="Der kleine Prinz" %}
 
+## Listen
+
+* erster Listenpunkt
+* zweiter Listenpunkt
+* dritter Listenpunkt
+
+1. Listenpunkt
+2. Listenpunkt
+3. Listenpunkt
+
+## Glyphicons
+
+* envelope {% include glyphicon.html name="envelope" %}
+* save {% include glyphicon.html name="save" %}
+
 *[HTML]: Hypertext Markup Language
