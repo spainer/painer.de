@@ -54,12 +54,12 @@ var paths = {
 gulp.task('default', ['development']);
 
 // development task
-gulp.task('development', ['jekyll', 'autoprefixer', 'scripts', 'serve'], function() {
+gulp.task('development', ['site', 'scripts', 'serve'], function() {
   // reload browser as the files have been changed recently
   browserSync.reload();
 
   // and watch files for changes
-  gulp.watch(paths.watch.pages, ['jekyll-reload']);
+  gulp.watch(paths.watch.pages, ['site-reload']);
   gulp.watch(paths.watch.scripts, ['scripts-reload']);
 });
 
@@ -91,7 +91,10 @@ gulp.task('jekyll', ['bootstrap-styles', 'bootstrap-fonts'], function(gulpCallBa
   });
 });
 
-// execute tasks depending on jekyll result
+// tasks to create site (without scripts)
+gulp.task('site', ['jekyll', 'autoprefixer']);
+
+// run autoprefixer
 gulp.task('autoprefixer', ['jekyll'], function() {
   return gulp.src(paths.assets.out + '/' + paths.styles.out)
     .pipe(autoprefixer({
@@ -102,7 +105,7 @@ gulp.task('autoprefixer', ['jekyll'], function() {
 });
 
 // task to recreate site and reload browser on changes
-gulp.task('jekyll-reload', ['jekyll', 'autoprefixer'], function() {
+gulp.task('site-reload', ['site'], function() {
   browserSync.reload();
 });
 
@@ -122,7 +125,7 @@ gulp.task('scripts-reload', ['scripts'], function() {
 gulp.task('release', ['html-release', 'styles-release', 'scripts-release']);
 
 // task to optimize scripts for release
-gulp.task('scripts-release', ['jekyll', 'scripts'], function() {
+gulp.task('scripts-release', ['site', 'scripts'], function() {
   return gulp.src(paths.assets.out + '/' + paths.scripts.out)
     .pipe(uglify({preserveComments: 'license'}))
     .pipe(gulp.dest(paths.assets.out))
@@ -131,7 +134,7 @@ gulp.task('scripts-release', ['jekyll', 'scripts'], function() {
 });
 
 // task to optimize styles
-gulp.task('styles-release', ['jekyll', 'autoprefixer', 'html-release'], function() {
+gulp.task('styles-release', ['site', 'html-release'], function() {
   return gulp.src(paths.assets.out + '/' + paths.styles.out)
     .pipe(uncss({
       html: [paths.site.out + '/**/*.html']
@@ -143,7 +146,7 @@ gulp.task('styles-release', ['jekyll', 'autoprefixer', 'html-release'], function
 });
 
 // task to optimize HTML
-gulp.task('html-release', ['jekyll'], function() {
+gulp.task('html-release', ['site'], function() {
   return gulp.src(paths.site.out + '/**/*.html')
     .pipe(htmlmin({
       removeComments: true,
