@@ -21,5 +21,8 @@
   </div>
 
   <script src="{{site.baseurl}}/assets/scripts.js"></script>
+  {% if content contains 'math/tex;' %}
+    {% include mathjax.html %}
+  {% endif %}
 </body>
 </html>

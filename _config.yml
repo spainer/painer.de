@@ -11,7 +11,7 @@ host: rasppi
 
 # Build settings
 markdown: kramdown
-exclude: [gulpfile.js, package.json, node_modules, LICENSE, README.md, assets/scripts]
+exclude: [gulpfile.js, package.json, node_modules, LICENSE, README.md]
 keep_files: [assets/scripts.js]
 
 sass:

@@ -15,6 +15,7 @@
   "devDependencies": {
     "bootstrap-sass": "^3.3.6",
     "browser-sync": "^2.9.10",
+    "event-stream": "^3.3.2",
     "gulp": "^3.9.0",
     "gulp-autoprefixer": "^3.1.0",
     "gulp-concat": "^2.6.0",
@@ -24,6 +25,7 @@
     "gulp-rename": "^1.2.2",
     "gulp-uglify": "^1.4.1",
     "gulp-uncss": "^1.0.4",
-    "jquery": "^2.2.1"
+    "jquery": "^2.2.1",
+    "mathjax": "^2.6.1"
   }
 }

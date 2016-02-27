@@ -10,6 +10,7 @@ var gzip = require('gulp-gzip');
 var spawn = require('child_process').spawn;
 var browserSync = require('browser-sync').create();
 var autoprefixer = require('gulp-autoprefixer');
+var es = require('event-stream');
 
 // paths to be used in the project
 var paths = {
@@ -31,6 +32,11 @@ var paths = {
     in: 'node_modules/jquery/dist/jquery.js',
     out: 'assets/scripts'
   },
+  mathjax: {
+    in: 'node_modules/mathjax',
+    out: 'assets/MathJax',
+    folders: ['config', 'extensions', 'jax', 'localization']
+  },
   scripts: {
     in: ['assets/scripts/jquery.js', 'assets/scripts/bootstrap.js'],
     out: 'scripts.js'
@@ -45,7 +51,7 @@ var paths = {
     out: '_site'
   },
   watch: {
-    pages: ['**/*.+(html|md|markdown|xml|yml|scss)', '!_site/**/*', '!_sass/bootstrap/**/*'],
+    pages: ['**/*.+(html|md|markdown|xml|yml|scss)', '!_site/**/*', '!_sass/bootstrap/**/*', '!assets/MathJax/**/*'],
     scripts: ['assets/scripts/**/*.js', '!_assets/scripts/jquery.js', '!_assets/scripts/bootstrap.js']
   }
 };
@@ -80,8 +86,18 @@ gulp.task('jquery', function() {
     pipe(gulp.dest(paths.jquery.out));
 });
 
+// copy MathJax to project
+gulp.task('mathjax', function() {
+  var tasks = paths.mathjax.folders.map(function(entry) {
+    return gulp.src(paths.mathjax.in + '/' + entry + '/**/*.*')
+      .pipe(gulp.dest(paths.mathjax.out + '/' + entry));
+  });
+  tasks.push(gulp.src(paths.mathjax.in + '/MathJax.js').pipe(gulp.dest(paths.mathjax.out)));
+  return es.concat.apply(null, tasks);
+});
+
 // start jekyll to rebuild web site
-gulp.task('jekyll', ['bootstrap-styles', 'bootstrap-fonts'], function(gulpCallBack) {
+gulp.task('jekyll', ['bootstrap-styles', 'bootstrap-fonts', 'mathjax'], function(gulpCallBack) {
   // start jekyll task
   var jekyll = spawn('jekyll', ['build'], {stdio: 'inherit'});
 
