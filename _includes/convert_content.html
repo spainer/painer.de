@@ -1,4 +1,14 @@
+{% comment %}
+Change first h1 heading to page heading.
+{% endcomment %}
 {% assign content = {{content | replace_first:'<h1','<div class="page-header"><h1' | replace_first:'</h1>','</h1></div>'}} %}
+
+{% comment %}
+Change paragraphs without any format options to justified text.
+{% endcomment %}
 {% assign content = {{content | replace:'<p>','<p class="text-justify">'}} %}
 
+{% comment %}
+Output converted text.
+{% endcomment %}
 {{content}}
