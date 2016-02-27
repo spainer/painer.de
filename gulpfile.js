@@ -38,7 +38,7 @@ var paths = {
     folders: ['config', 'extensions', 'jax', 'localization']
   },
   scripts: {
-    in: ['assets/scripts/jquery.js', 'assets/scripts/bootstrap.js'],
+    in: ['assets/scripts/jquery.js', 'assets/scripts/bootstrap.js', 'assets/scripts/custom.js'],
     out: 'scripts.js'
   },
   styles: {

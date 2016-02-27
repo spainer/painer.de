@@ -1,7 +1,7 @@
 <nav class="navbar navbar-default navbar-static-top row" role="navigation">
   <div class="container-fluid">
     <div class="navbar-header">
-      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar" aria-expanded="true" aria-controls="navbar">
         <span class="sr-only">Toggle navigation</span>
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
@@ -9,7 +9,7 @@
       </button>
       <a class="navbar-brand" href="{{site.baseurl}}/{{page.lang}}/">{{site.title}}</a>
     </div>
-    <div id="navbar" class="navbar-collapse collapse">
+    <div id="navbar" class="navbar-collapse collapse in" aria-expanded="true">
       <ul class="nav navbar-nav">
         {% for navi in site.data.nav %}
           {% if navi.type == "entry" %}
@@ -21,8 +21,8 @@
             {% endif %}
             <a href="{{site.baseurl}}{{p.url}}">{{p.title}}</a></li>
           {% elsif navi.type == "menu" %}
-            <li class="dropdown">
-              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">{{navi.name[page.lang]}}<span class="caret"></span></a>
+            <li class="dropdown open">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="true">{{navi.name[page.lang]}}<span class="caret"></span></a>
               <ul class="dropdown-menu" role="menu">
                 {% for child in navi.entries %}
                   {% if child.type == "separator" %}
