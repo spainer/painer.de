@@ -1,0 +1,15 @@
+{% comment %}
+Shows a panel. Text, header and footer can be given in the corresponding parameters.
+All but the text are optional. The type can also be given in the type parameter.
+{% endcomment %}
+
+{% if include.type %}
+{% assign type = include.type %}
+{% else %}
+{% assign type = "default" %}
+{% endif %}
+<div class="panel panel-{{type}}">
+  {% if include.header %}<div class="panel-heading">{{include.header}}</div>{% endif %}
+  <div class="panel-body">{{include.text}}</div>
+  {% if include.footer %}<div class="panel-footer">{{include.footer}}</div>{% endif %}
+</div>

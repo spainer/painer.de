@@ -58,6 +58,13 @@ $$
 
 ## Jumbotron
 
-{% include jumbotron.html title="Jumbotron" text="Kleiner Text im Jumbotron" %}
+{% capture text %}
+<p class="text-right">Kleiner Text im Jumbotron</p>
+{% endcapture %}
+{% include jumbotron.html title="Jumbotron" text=text %}
+
+## Panel
+
+{% include panel.html text="Test eines Panels" header="Header" footer="Footer" type="info" %}
 
 *[HTML]: Hypertext Markup Language
