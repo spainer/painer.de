@@ -56,4 +56,8 @@ $$
 \|\vec{v}\| = \sqrt{\sum_i v_i^2}
 $$
 
+## Jumbotron
+
+{% include jumbotron.html title="Jumbotron" text="Kleiner Text im Jumbotron" %}
+
 *[HTML]: Hypertext Markup Language
