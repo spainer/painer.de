@@ -1,6 +1,15 @@
+{% comment %}
+Show a jumbotron. The text has to be given in the text parameter and a title
+is optional in the title parameter.
+{% endcomment %}
+
 <div class="jumbotron">
   {% if include.title %}
     <h1>{{include.title}}</h1>
   {% endif %}
+  {% if include.text contains '<p' %}
+  {{include.text}}
+  {% else %}
   <p>{{include.text}}</p>
+  {% endif %}
 </div>
