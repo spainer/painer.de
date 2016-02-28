@@ -50,7 +50,7 @@ das Wesentliche ist für die Augen unsichtbar.
 
 ## Mathematik
 
-Norm eines Vektors $\vec{v}$:
+Norm eines Vektors $$\vec{v}$$:
 
 $$
 \|\vec{v}\| = \sqrt{\sum_i v_i^2}
