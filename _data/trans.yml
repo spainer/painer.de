@@ -1,5 +1,7 @@
 de:
   cite_in: 'in'
+  jswarning: 'JavaScript ist deaktiviert, bitte für volle Funktionalität aktivieren.'
 
 en:
   cite_in: 'in'
+  jswarning: 'JavaScript is disabled, please enable for full functionality.'
