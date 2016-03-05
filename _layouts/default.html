@@ -1,6 +1,16 @@
 ---
 layout: base
 ---
+
+{% if page.project %}
+<div id="projectnav" class="col-sm-3 col-sm-push-9">
+  {% include projectnav.html %}
+</div>
+<article class="col-sm-9 col-sm-pull-3">
+  {% include convert_content.html %}
+</article>
+{% else %}
 <article class="col-xs-12">
   {% include convert_content.html %}
 </article>
+{% endif %}

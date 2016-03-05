@@ -1,0 +1,13 @@
+{% assign project = site.data.projects[page.project] %}
+<h3>{{project.name[page.lang]}}</h3>
+<ul class="nav nav-pills nav-stacked">
+  {% for pg in project.pages %}
+    {% assign p = site.pages | where:"id",pg | where:"lang",page.lang, | first %}
+    {% if p.id == page.id %}
+      <li role="presentation" class="active">
+    {% else %}
+      <li role="presentation">
+    {% endif %}
+    <a href="{{site.baseurl}}{{p.url}}">{{p.title}}</a></li>
+  {% endfor %}
+</ul>

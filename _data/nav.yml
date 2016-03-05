@@ -7,6 +7,8 @@
     de: Menü
     en: Menu
   entries:
+    - type: project
+      id: pone
     - type: entry
       id: index
     - type: separator
@@ -15,4 +17,6 @@
         de: Überschrift
         en: Headline
     - type: entry
-      id: index
+      id: test
+    - type: entry
+      id: imprint

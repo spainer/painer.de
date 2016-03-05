@@ -20,6 +20,15 @@
               <li>
             {% endif %}
             <a href="{{site.baseurl}}{{p.url}}">{{p.title}}</a></li>
+          {% elsif navi.type == "project" %}
+            {% assign project=site.data.projects[navi.id] %}
+            {% assign p=site.pages | where:"id",project.pages[0] | where:"lang",page.lang | first %}
+            {% if project.pages contains page.id %}
+              <li class="active">
+            {% else %}
+              <li>
+            {% endif %}
+            <a href="{{site.baseurl}}{{p.url}}">{{project.name[page.lang]}}</a></li>
           {% elsif navi.type == "menu" %}
             <li class="dropdown open">
               <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="true">{{navi.name[page.lang]}}<span class="caret"></span></a>
@@ -29,6 +38,15 @@
                     <li class="divider"></li>
                   {% elsif child.type == "headline" %}
                     <li class="dropdown-header">{{child.name[page.lang]}}</li>
+                  {% elsif child.type == "project" %}
+                    {% assign project=site.data.projects[child.id] %}
+                    {% assign p=site.pages | where:"id",project.pages[0] | where:"lang",page.lang | first %}
+                    {% if project.pages contains page.id %}
+                      <li class="active">
+                    {% else %}
+                      <li>
+                    {% endif %}
+                    <a href="{{site.baseurl}}{{p.url}}">{{project.name[page.lang]}}</a></li>
                   {% else %}
                     {% assign p=site.pages | where:"id",child.id | where:"lang",page.lang | first %}
                     {% if child.id == page.id %}

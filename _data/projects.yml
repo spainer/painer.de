@@ -1,0 +1,10 @@
+pone:
+  name:
+    de: Projekt 1
+    en: Project 1
+  pages: [poneone, ponetwo, ponethree]
+ptwo:
+  name:
+    de: Projekt 2
+    en: Project 2
+  pages: [ptwoone, ptwotwo, ptwothree]
