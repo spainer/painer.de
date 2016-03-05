@@ -9,6 +9,11 @@ Change paragraphs without any format options to justified text.
 {% assign content = {{content | replace:'<p>','<p class="text-justify">'}} %}
 
 {% comment %}
+Add table classes to tables.
+{% endcomment %}
+{% assign content = {{content | replace:'<table>','<table class="table table-hover">'}} %}
+
+{% comment %}
 Output converted text.
 {% endcomment %}
 {{content}}
