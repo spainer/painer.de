@@ -1,5 +1,10 @@
 {% comment %}
-
+Component to show the image given in the parameter file. An image can be
+floated at the left or right by the parameter float. The alternative text
+can be given in the parameter alt. If the image should be in the same paragraph
+as the text, the best is to include it in the same line as the text. Only
+the thumbnail of the image is shown surrounded by a link the the full image.
+</thead>
 {% endcomment %}
 <a href="{{site.baseurl}}/assets/images/{{include.file}}">
   <img src="{{site.baseurl}}/assets/images/thumbnails/{{include.file}}" alt="{{include.alt}}" class="img-thumbnail{%if include.float %} pull-{{include.float}}{% endif %}" width="200" height="200" />
