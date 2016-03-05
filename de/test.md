@@ -68,3 +68,6 @@ $$
 {% include panel.html text="Test eines Panels" header="Header" footer="Footer" type="info" %}
 
 *[HTML]: Hypertext Markup Language
+
+## Well
+{% include well.html text="Dies eine Well-Komponenete" %}
