@@ -1,0 +1,6 @@
+{% comment %}
+
+{% endcomment %}
+<a href="{{site.baseurl}}/assets/images/{{include.file}}">
+  <img src="{{site.baseurl}}/assets/images/thumbnails/{{include.file}}" alt="{{include.alt}}" class="img-thumbnail{%if include.float %} pull-{{include.float}}{% endif %}" width="200" height="200" />
+</a>
