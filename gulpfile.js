@@ -11,6 +11,9 @@ var spawn = require('child_process').spawn;
 var browserSync = require('browser-sync').create();
 var autoprefixer = require('gulp-autoprefixer');
 var es = require('event-stream');
+var changed = require('gulp-changed');
+var imageResize = require('gulp-image-resize');
+var clean = require('gulp-clean');
 
 // paths to be used in the project
 var paths = {
@@ -44,6 +47,13 @@ var paths = {
   styles: {
     out: 'style.css'
   },
+  images: {
+    in: 'assets/images',
+    out: '_site/assets/images',
+    thumbnails: 'thumbnails',
+    width: 200,
+    height: 200
+  },
   assets: {
     out: '_site/assets'
   },
@@ -52,7 +62,8 @@ var paths = {
   },
   watch: {
     pages: ['**/*.+(html|md|markdown|xml|yml|scss)', '!_site/**/*', '!_sass/bootstrap/**/*', '!assets/MathJax/**/*'],
-    scripts: ['assets/scripts/**/*.js', '!_assets/scripts/jquery.js', '!_assets/scripts/bootstrap.js']
+    scripts: ['assets/scripts/**/*.js', '!_assets/scripts/jquery.js', '!_assets/scripts/bootstrap.js'],
+    images: ['assets/images/**/*']
   }
 };
 
@@ -67,6 +78,7 @@ gulp.task('development', ['site', 'scripts', 'serve'], function() {
   // and watch files for changes
   gulp.watch(paths.watch.pages, ['site-reload']);
   gulp.watch(paths.watch.scripts, ['scripts-reload']);
+  gulp.watch(paths.watch.images, ['images-reload']);
 });
 
 // copy bootstrap to project
@@ -82,8 +94,8 @@ gulp.task('bootstrap-fonts', function() {
 
 // copy jQuery to project
 gulp.task('jquery', function() {
-  return gulp.src(paths.jquery.in).
-    pipe(gulp.dest(paths.jquery.out));
+  return gulp.src(paths.jquery.in)
+    .pipe(gulp.dest(paths.jquery.out));
 });
 
 // copy MathJax to project
@@ -94,6 +106,30 @@ gulp.task('mathjax', function() {
   });
   tasks.push(gulp.src(paths.mathjax.in + '/MathJax.js').pipe(gulp.dest(paths.mathjax.out)));
   return es.concat.apply(null, tasks);
+});
+
+// task to copy images to side and create thumbnails
+gulp.task('images', function() {
+  return gulp.src(paths.images.in + '/**/*')
+    .pipe(changed(paths.images.out))
+    .pipe(gulp.dest(paths.images.out))
+    .pipe(imageResize({
+      width: paths.images.width,
+      height: paths.images.height,
+      crop: true
+    }))
+    .pipe(gulp.dest(paths.images.out + '/' + paths.images.thumbnails))
+});
+
+// task to recreate images and reload browser on changes
+gulp.task('images-reload', ['images'], function() {
+  browserSync.reload();
+});
+
+// task to delete images
+gulp.task('images-clean', function() {
+  return gulp.src(paths.images.out, {read: false})
+    .pipe(clean());
 });
 
 // start jekyll to rebuild web site
@@ -108,7 +144,7 @@ gulp.task('jekyll', ['bootstrap-styles', 'bootstrap-fonts', 'mathjax'], function
 });
 
 // tasks to create site (without scripts)
-gulp.task('site', ['jekyll', 'autoprefixer']);
+gulp.task('site', ['jekyll', 'autoprefixer', 'images']);
 
 // run autoprefixer
 gulp.task('autoprefixer', ['jekyll'], function() {
