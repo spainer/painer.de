@@ -204,6 +204,8 @@ gulp.task('html-release', ['site'], function() {
       removeComments: true,
       collapseWhitespace: true
     }))
+    .pipe(gulp.dest(paths.site.out))
+    .pipe(gzip())
     .pipe(gulp.dest(paths.site.out));
 });
 

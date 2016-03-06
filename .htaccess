@@ -1,0 +1,20 @@
+AuthUserFile /www/htdocs/w00d0c7c/dev/.htpasswd
+AuthGroupFile /dev/null
+AuthName 'bitte Zugangsdaten eingeben'
+AuthType Basic
+require valid-user
+
+# Change right home page for language
+RewriteEngine on
+RewriteCond %{HTTP:Accept-Language} ^de.*$ [NC]
+RewriteRule ^index.html$ /de/index.html
+RewriteRule ^index.html$ /en/index.html
+
+# Deliver files gzipped, if browser supports this and compressed file available
+RewriteCond %{HTTP:Accept-Encoding} gzip [NC]
+RewriteCond %{REQUEST_FILENAME}.gz -s
+RewriteRule ^(.+)$ $1.gz [QSA]
+RewriteRule \.css\.gz$ - [T=text/css,E=no-gzip:1,E=FORCE_GZIP]
+RewriteRule \.js\.gz$ - [T=text/javascript,E=no-gzip:1,E=FORCE_GZIP]
+RewriteRule \.html\.gz$ - [T=text/html,E=no-gzip:1,E=FORCE_GZIP]
+Header set Content-Encoding gzip env=FORCE_GZIP
