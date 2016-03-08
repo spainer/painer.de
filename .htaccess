@@ -1,8 +1,8 @@
 # Change right home page for language
 RewriteEngine on
 RewriteCond %{HTTP:Accept-Language} ^de.*$ [NC]
-RewriteRule ^index.html$ /de/index.html
-RewriteRule ^index.html$ /en/index.html
+RewriteRule ^index.php$ /de/index.html
+RewriteRule ^index.php$ /en/index.html
 
 # Deliver files gzipped, if browser supports this and compressed file available
 RewriteCond %{HTTP:Accept-Encoding} gzip [NC]
