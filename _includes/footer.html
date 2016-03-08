@@ -5,6 +5,10 @@
 			{% if imprint %}
 				<a href="{{site.baseurl}}{{imprint.url}}">{{imprint.title}}</a>
 			{% endif %}
+			{% assign privacy=site.pages | where:"id","privacy" | where:"lang",page.lang | first %}
+			{% if privacy %}
+				| <a href="{{site.baseurl}}{{privacy.url}}">{{privacy.title}}</a>
+			{% endif %}
 		</div>
 		<div class="col-xs-6 text-right">
 			&copy; {{ 'now' | date: "%Y" }} Sven Painer
